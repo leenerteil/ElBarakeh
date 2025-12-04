@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@300;400;500;600;700;800&display=swap');
+@import 'tailwindcss';
+
+/* RTL Base Styles */
+[dir="rtl"] {
+  font-family: 'Noto Sans Arabic', sans-serif;
+}
+
+html {
+  direction: rtl;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Noto Sans Arabic', sans-serif;
+  background-color: #ffffff;
+  color: #000000;
+  text-align: right;
+}
+
+/* Fix for RTL layout */
+.space-x-reverse > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 1;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1A73E8;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #0056b3;
+}
+
+/* Fix for flexbox in RTL */
+.flex-row-reverse-rtl {
+  flex-direction: row-reverse;
+}
+
+/* Fix for icons and text alignment */
+.icon-text-container {
+  display: flex;
+  align-items: center;
+}
+
+.icon-text-container > :first-child {
+  margin-left: 0.5rem;
+  margin-right: 0;
+}
