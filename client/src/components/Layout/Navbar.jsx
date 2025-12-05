@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { User, LogOut, Home, BookOpen, Calendar, Menu, X, Car } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { User, LogOut, Home, BookOpen, Calendar, Menu, X, Car, Users } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 import { useModal } from '../../context/ModalContext';
 import { useState } from 'react';
@@ -9,13 +9,15 @@ const Navbar = () => {
   const { isAuthenticated, isAdmin, logout, user } = useAuthStore();
   const { openLoginModal, openRegisterModal } = useModal();
   const location = useLocation();
+  const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navLinks = [
     { path: '/', label: 'الرئيسية', icon: <Home size={22} /> },
-    { path: '/study', label: 'المادة الدراسية', icon: <BookOpen size={22} /> },
-    { path: '/quiz', label: 'اختبار القيادة', icon: <Car size={22} /> },
-    { path: '/appointments', label: 'حجز موعد', icon: <Calendar size={22} /> },
+    { path: '/about', label: 'من نحن', icon: <Users size={22} /> },
+    { path: '/study', label: 'المادة الدراسية', icon: <BookOpen size={22} />, requiresAuth: true },
+    { path: '/quiz', label: 'اختبار القيادة', icon: <Car size={22} />, requiresAuth: true },
+    { path: '/appointments', label: 'حجز موعد', icon: <Calendar size={22} />, requiresAuth: true },
   ];
 
   const adminLinks = [
@@ -23,6 +25,28 @@ const Navbar = () => {
     { path: '/admin/schedule', label: 'إدارة الجدول' },
     { path: '/admin/appointments', label: 'الحجوزات' },
   ];
+
+  const handleNavLinkClick = (link) => {
+    if (link.requiresAuth && !isAuthenticated) {
+      openLoginModal();
+      return false;
+    }
+    return true;
+  };
+
+  const handleStudyLinkClick = (e) => {
+    e.preventDefault();
+    if (!isAuthenticated) {
+      openLoginModal({
+        onSuccess: () => {
+          navigate('/study');
+        }
+      });
+    } else {
+      navigate('/study');
+    }
+    setIsMobileMenuOpen(false);
+  };
 
   return (
     <nav className="bg-[#1A73E8] text-white shadow-lg">
@@ -79,17 +103,31 @@ const Navbar = () => {
             {/* Navigation Links */}
             <div className="flex items-center gap-3 lg:gap-4 xl:gap-6">
               {navLinks.map((link) => (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  className={`flex items-center gap-1 lg:gap-2 hover:text-blue-200 transition-colors text-sm lg:text-base xl:text-lg ${
-                    location.pathname === link.path ? 'text-blue-200 font-bold border-b-2 border-white pb-1 lg:pb-2' : ''
-                  }`}
-                >
-                  <span className="hidden lg:inline">{link.label}</span>
-                  <span className="lg:hidden">{link.label.split(' ')[0]}</span>
-                  {link.icon}
-                </Link>
+                <React.Fragment key={link.path}>
+                  {link.path === '/study' ? (
+                    <button
+                      onClick={handleStudyLinkClick}
+                      className={`flex items-center gap-1 lg:gap-2 hover:text-blue-200 transition-colors text-sm lg:text-base xl:text-lg ${
+                        location.pathname === link.path ? 'text-blue-200 font-bold border-b-2 border-white pb-1 lg:pb-2' : ''
+                      }`}
+                    >
+                      <span className="hidden lg:inline">{link.label}</span>
+                      <span className="lg:hidden">{link.label.split(' ')[0]}</span>
+                      {link.icon}
+                    </button>
+                  ) : (
+                    <Link
+                      to={link.path}
+                      className={`flex items-center gap-1 lg:gap-2 hover:text-blue-200 transition-colors text-sm lg:text-base xl:text-lg ${
+                        location.pathname === link.path ? 'text-blue-200 font-bold border-b-2 border-white pb-1 lg:pb-2' : ''
+                      }`}
+                    >
+                      <span className="hidden lg:inline">{link.label}</span>
+                      <span className="lg:hidden">{link.label.split(' ')[0]}</span>
+                      {link.icon}
+                    </Link>
+                  )}
+                </React.Fragment>
               ))}
               
               {isAdmin && (
@@ -185,19 +223,34 @@ const Navbar = () => {
           <div className="md:hidden bg-[#1A73E8] border-t border-blue-400 py-3 sm:py-4">
             <div className="space-y-2 sm:space-y-3">
               {navLinks.map((link) => (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  className={`flex items-center justify-between p-3 sm:p-4 rounded-lg text-sm sm:text-base ${
-                    location.pathname === link.path 
-                      ? 'bg-white/10 text-white' 
-                      : 'hover:bg-white/5'
-                  }`}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  <span>{link.label}</span>
-                  {React.cloneElement(link.icon, { size: 20 })}
-                </Link>
+                <React.Fragment key={link.path}>
+                  {link.path === '/study' ? (
+                    <button
+                      onClick={handleStudyLinkClick}
+                      className={`flex items-center justify-between w-full p-3 sm:p-4 rounded-lg text-sm sm:text-base ${
+                        location.pathname === link.path 
+                          ? 'bg-white/10 text-white' 
+                          : 'hover:bg-white/5'
+                      }`}
+                    >
+                      <span>{link.label}</span>
+                      {React.cloneElement(link.icon, { size: 20 })}
+                    </button>
+                  ) : (
+                    <Link
+                      to={link.path}
+                      className={`flex items-center justify-between p-3 sm:p-4 rounded-lg text-sm sm:text-base ${
+                        location.pathname === link.path 
+                          ? 'bg-white/10 text-white' 
+                          : 'hover:bg-white/5'
+                      }`}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <span>{link.label}</span>
+                      {React.cloneElement(link.icon, { size: 20 })}
+                    </Link>
+                  )}
+                </React.Fragment>
               ))}
               
               {isAdmin && (

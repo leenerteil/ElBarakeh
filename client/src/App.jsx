@@ -1,11 +1,12 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import Navbar from './components/Layout/Navbar';
 import Footer from './components/Layout/Footer';
 import Home from './pages/guest/Home';
 import StudyPage from './pages/user/StudyPage';
 import QuizPage from './pages/user/QuizPage';
 import AppointmentsPage from './pages/user/AppointmentsPage';
+import AboutPage from './pages/guest/AboutPage';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import LoginModal from "./pages/auth/LoginModal";
 import RegisterModal from "./pages/auth/RegisterModal";
@@ -14,6 +15,7 @@ import { ModalProvider } from './context/ModalContext';
 
 function AppContent() {
   const { isAuthenticated, isAdmin } = useAuthStore();
+  const navigate = useNavigate();
 
   return (
     <>
@@ -22,6 +24,7 @@ function AppContent() {
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<Home />} />
+          <Route path="/about" element={<AboutPage />} />
           
           {/* Protected User Routes */}
           <Route 

@@ -3,21 +3,33 @@ import { useForm } from 'react-hook-form';
 import { X } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 import { useModal } from '../../context/ModalContext';
+import { useNavigate } from 'react-router-dom';
 
 const LoginModal = () => {
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
   const { login } = useAuthStore();
-  const { isLoginOpen, closeModal, switchToRegister } = useModal();
+  const { isLoginOpen, closeModal, switchToRegister, handleLoginSuccess } = useModal();
+  const navigate = useNavigate();
 
-  const onSubmit = (data) => {
-    login({
-      id: 1,
-      name: data.email.split('@')[0],
-      email: data.email,
-      role: 'user'
-    });
-    closeModal();
-    reset();
+  const onSubmit = async (data) => {
+    try {
+      // Call the login function from auth store
+      await login({
+        id: 1,
+        name: data.email.split('@')[0],
+        email: data.email,
+        role: 'user'
+      });
+      
+      // Reset form
+      reset();
+      
+      // Handle login success (this includes closing the modal)
+      handleLoginSuccess();
+      
+    } catch (error) {
+      console.error('Login failed:', error);
+    }
   };
 
   if (!isLoginOpen) return null;

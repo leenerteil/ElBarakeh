@@ -19,6 +19,29 @@ body {
   text-align: right;
 }
 
+/* Color fixes */
+.text-primary-blue {
+  color: #2563eb !important;
+}
+
+.bg-primary-blue {
+  background-color: #2563eb !important;
+}
+
+.border-primary-blue {
+  border-color: #2563eb !important;
+}
+
+.hover\:bg-blue-700:hover {
+  background-color: #1d4ed8 !important;
+}
+
+/* Modal backdrop with blur */
+.modal-backdrop {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
 /* Fix for RTL layout */
 .space-x-reverse > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 1;
@@ -34,12 +57,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1A73E8;
+  background: #2563eb;
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #0056b3;
+  background: #1d4ed8;
 }
 
 /* Fix for flexbox in RTL */
@@ -56,4 +79,236 @@ body {
 .icon-text-container > :first-child {
   margin-left: 0.5rem;
   margin-right: 0;
+}
+
+/* Custom utility classes for spacing in RTL */
+.ml-auto-rtl {
+  margin-left: auto;
+}
+
+.mr-auto-rtl {
+  margin-right: auto;
+}
+
+/* Text alignment fixes for RTL */
+.text-left-rtl {
+  text-align: left;
+}
+
+.text-right-rtl {
+  text-align: right;
+}
+
+/* Calendar styles */
+.calendar-day {
+  transition: all 0.2s ease;
+}
+
+.calendar-day:hover:not(.disabled) {
+  background-color: #eff6ff;
+}
+
+.calendar-day.selected {
+  background-color: #2563eb;
+  color: white;
+}
+
+.calendar-day.disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Form styles */
+input, select, textarea {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .grid-cols-7 {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+}
+
+/* Loading states */
+.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* Animation for booking confirmation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.animate-slideIn {
+  animation: slideIn 0.3s ease-out;
+}
+
+.w-full {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.container, .mx-auto {
+  max-width: 100% !important;
+  width: 100% !important;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 768px) {
+  .container, .mx-auto {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container, .mx-auto {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+}
+
+/* Calendar improvements */
+.calendar-day {
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.calendar-day.selected {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: white;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  z-index: 10;
+}
+
+.calendar-day.selected::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border-radius: 12px;
+  background: rgba(37, 99, 235, 0.1);
+  z-index: -1;
+}
+
+.calendar-day.today:not(.selected) {
+  border: 2px solid #2563eb;
+  background-color: #eff6ff;
+  font-weight: bold;
+}
+
+/* Remove all gaps and spaces */
+.gap-0 {
+  gap: 0 !important;
+}
+
+.space-y-0 > * + * {
+  margin-top: 0 !important;
+}
+
+/* Smooth transitions */
+* {
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+/* Modal animations */
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-modalFadeIn {
+  animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Improved button hover effects */
+button:hover {
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* Custom scrollbar for better experience */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
+}
+
+/* Focus styles for accessibility */
+:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+/* Responsive improvements */
+@media (max-width: 640px) {
+  .grid-cols-7 {
+    grid-template-columns: repeat(7, minmax(0, 1fr)) !important;
+    gap: 2px !important;
+  }
+  
+  .calendar-day {
+    height: 2.5rem !important;
+    font-size: 0.875rem !important;
+  }
 }

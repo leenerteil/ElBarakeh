@@ -2,6 +2,116 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { BookOpen, Car, Calendar, Shield, ArrowLeft, Award, Clock, Users, CheckCircle, Star } from 'lucide-react';
 
+// Shared color configuration
+const colors = {
+  blue: {
+    bg: 'bg-blue-50',
+    text: 'text-blue-600',
+    gradient: 'from-blue-500 to-blue-600',
+    hover: 'hover:text-blue-700'
+  },
+  cyan: {
+    bg: 'bg-cyan-50',
+    text: 'text-cyan-600',
+    gradient: 'from-cyan-500 to-blue-500',
+    hover: 'hover:text-cyan-700'
+  },
+  blueCyan: {
+    gradient: 'from-blue-500 to-cyan-400'
+  }
+};
+
+// Service Card Component
+const ServiceCard = ({ service }) => {
+  const color = colors[service.color];
+  
+  return (
+    <div className="group bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 p-6 hover:-translate-y-1">
+      <div className={`mb-6 p-4 rounded-lg inline-flex ${color.bg} ${color.text}`}>
+        {service.icon}
+      </div>
+
+      <h3 className="text-xl font-bold text-gray-900 mb-3">
+        {service.title}
+      </h3>
+
+      <p className="text-gray-600 mb-6 text-sm leading-relaxed">
+        {service.description}
+      </p>
+
+      <Link
+        to={service.link}
+        className={`inline-flex items-center gap-2 text-sm font-medium ${color.text} ${color.hover} transition-colors`}
+      >
+        اكتشف الخدمة
+        <ArrowLeft className="h-4 w-4" />
+      </Link>
+    </div>
+  );
+};
+
+// Benefit Card Component
+const BenefitCard = ({ benefit, index }) => {
+  const statColor = benefit.statColor || `from-blue-400 to-cyan-400`;
+  
+  return (
+    <div className="group relative bg-white rounded-xl border border-gray-100 p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden">
+      {/* Decorative Corner */}
+      <div className={`absolute top-0 right-0 h-16 w-16 bg-gradient-to-br ${statColor} opacity-5 rounded-bl-3xl`}></div>
+      
+      <div className="flex items-start gap-4">
+        {/* Icon Container */}
+        <div className={`flex-shrink-0 h-12 w-12 rounded-lg bg-gradient-to-br ${statColor} flex items-center justify-center`}>
+          <div className="text-white">
+            {benefit.icon}
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="flex-1">
+          <div className="flex items-center justify-between mb-2">
+            <h4 className="text-lg font-bold text-gray-900">
+              {benefit.title}
+            </h4>
+            {benefit.stat && (
+              <span className={`text-sm font-bold px-3 py-1 rounded-full bg-gradient-to-r ${statColor} text-white`}>
+                {benefit.stat}
+              </span>
+            )}
+          </div>
+          <p className="text-gray-600 text-sm leading-relaxed">
+            {benefit.description}
+          </p>
+        </div>
+      </div>
+
+      {/* Hover Indicator */}
+      <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-cyan-400 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+    </div>
+  );
+};
+
+// Section Header Component
+const SectionHeader = ({ title, subtitle, gradientText = "", showDivider = true }) => (
+  <div className="text-center mb-12">
+
+    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+      {title}
+      {gradientText && (
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-cyan-400">
+          {" "}{gradientText}
+        </span>
+      )}
+    </h2>
+    {subtitle && (
+      <p className="text-gray-600 max-w-2xl mx-auto text-lg">
+        {subtitle}
+      </p>
+    )}
+  </div>
+);
+
+// Services Component
 const Services = () => {
   const services = [
     {
@@ -59,74 +169,37 @@ const Services = () => {
     {
       icon: <CheckCircle className="h-6 w-6" />,
       title: "مرونة كاملة",
-      description: "تعديل وتأجيل الدروس حسب احتياجك في أي وقت",
-      statColor: "from-blue-500 to-cyan-400"
+      description: "تعديل وتأجيل الدروس حسب احتياجك في أي وقت"
     },
     {
       icon: <Clock className="h-6 w-6" />,
       title: "توفير للوقت",
-      description: "منهجية متكاملة تقصر الطريق نحو الحصول على الرخصة",
-      statColor: "from-cyan-400 to-blue-400"
+      description: "منهجية متكاملة تقصر الطريق نحو الحصول على الرخصة"
     },
     {
       icon: <Shield className="h-6 w-6" />,
       title: "سلامة مضمونة",
-      description: "تدريبات عملية على أحدث السيارات المجهزة بأنظمة السلامة",
-      statColor: "from-blue-500 to-blue-600"
+      description: "تدريبات عملية على أحدث السيارات المجهزة بأنظمة السلامة"
     }
   ];
 
   return (
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <div className="mb-4">
-            <div className="h-1 w-16 bg-gradient-to-r from-blue-500 to-cyan-400 mx-auto rounded-full"></div>
-          </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            خدماتنا المتكاملة
-          </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-            نقدم باقة متكاملة من الخدمات المصممة لتحويلك إلى سائق محترف بأعلى معايير السلامة
-          </p>
-        </div>
+        {/* Services Header */}
+        <SectionHeader
+          title="خدماتنا المتكاملة"
+          subtitle="نقدم باقة متكاملة من الخدمات المصممة لتحويلك إلى سائق محترف بأعلى معايير السلامة"
+        />
 
         {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
           {services.map((service, index) => (
-            <div
-              key={index}
-              className="group bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 p-6 hover:-translate-y-1"
-            >
-              <div className={`mb-6 p-4 rounded-lg inline-flex ${
-                service.color === 'blue' 
-                  ? 'bg-blue-50 text-blue-600' 
-                  : 'bg-cyan-50 text-cyan-600'
-              }`}>
-                {service.icon}
-              </div>
-
-              <h3 className="text-xl font-bold text-gray-900 mb-3">
-                {service.title}
-              </h3>
-
-              <p className="text-gray-600 mb-6 text-sm leading-relaxed">
-                {service.description}
-              </p>
-
-              <Link
-                to={service.link}
-                className="inline-flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
-              >
-                اكتشف الخدمة
-                <ArrowLeft className="h-4 w-4" />
-              </Link>
-            </div>
+            <ServiceCard key={index} service={service} />
           ))}
         </div>
 
-        {/* Why Choose Us Section - IMPROVED */}
+        {/* Why Choose Us Section */}
         <div className="mb-16">
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-3 mb-4">
@@ -141,50 +214,15 @@ const Services = () => {
             </p>
           </div>
 
-          {/* Benefits Grid - Improved Design */}
+          {/* Benefits Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {benefits.map((benefit, index) => (
-              <div
-                key={index}
-                className="group relative bg-white rounded-xl border border-gray-100 p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 overflow-hidden"
-              >
-                {/* Decorative Corner */}
-                <div className={`absolute top-0 right-0 h-16 w-16 bg-gradient-to-br ${benefit.statColor} opacity-5 rounded-bl-3xl`}></div>
-                
-                <div className="flex items-start gap-4">
-                  {/* Icon Container */}
-                  <div className={`flex-shrink-0 h-12 w-12 rounded-lg bg-gradient-to-br ${benefit.statColor} flex items-center justify-center`}>
-                    <div className="text-white">
-                      {benefit.icon}
-                    </div>
-                  </div>
-
-                  {/* Content */}
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between mb-2">
-                      <h4 className="text-lg font-bold text-gray-900">
-                        {benefit.title}
-                      </h4>
-                      {benefit.stat && (
-                        <span className={`text-sm font-bold px-3 py-1 rounded-full bg-gradient-to-r ${benefit.statColor} text-white`}>
-                          {benefit.stat}
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-gray-600 text-sm leading-relaxed">
-                      {benefit.description}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Hover Indicator */}
-                <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-cyan-400 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-              </div>
+              <BenefitCard key={index} benefit={benefit} index={index} />
             ))}
           </div>
         </div>
 
-        {/* Unified CTA Section */}
+        {/* CTA Section */}
         <div className="bg-gradient-to-r from-blue-500 to-cyan-400 rounded-2xl p-8 md:p-12 relative overflow-hidden">
           {/* Background Pattern */}
           <div className="absolute inset-0 opacity-10">

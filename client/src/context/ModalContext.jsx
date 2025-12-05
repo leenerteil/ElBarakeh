@@ -13,10 +13,24 @@ export const useModal = () => {
 export const ModalProvider = ({ children }) => {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+  const [loginCallback, setLoginCallback] = useState(null);
 
-  const openLoginModal = () => {
+  const openLoginModal = (options = {}) => {
     setIsLoginOpen(true);
     setIsRegisterOpen(false);
+    if (options.onSuccess) {
+      setLoginCallback(() => options.onSuccess);
+    } else {
+      setLoginCallback(null);
+    }
+  };
+
+  const handleLoginSuccess = () => {
+    closeModal();
+    if (loginCallback) {
+      loginCallback();
+      setLoginCallback(null); // Clear the callback after use
+    }
   };
 
   const openRegisterModal = () => {
@@ -48,7 +62,8 @@ export const ModalProvider = ({ children }) => {
         openRegisterModal,
         closeModal,
         switchToRegister,
-        switchToLogin
+        switchToLogin,
+        handleLoginSuccess, // Changed from onLoginSuccess to handleLoginSuccess
       }}
     >
       {children}
